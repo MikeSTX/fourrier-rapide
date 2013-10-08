@@ -112,8 +112,9 @@ void CatchValue_Function()
 	gtk_window_set_title(GTK_WINDOW(CatchValue_Window), "Fenetre - saisis des valeurs"); //Titre de la fenêtre
 	gtk_window_set_default_size(GTK_WINDOW(CatchValue_Window), 50, 50); //Taille minimum de la fenêtre
 	gtk_container_set_border_width(GTK_CONTAINER(CatchValue_Window), 5);
+	gtk_window_set_position(GTK_WINDOW(CatchValue_Window), GTK_WIN_POS_CENTER); //Postionne la fenetre au centre de l'ecran
 	gtk_window_set_resizable(GTK_WINDOW(CatchValue_Window), FALSE); // Il n'est pas possible de modifier la taille de la fenêtre
-	//gtk_window_set_focus(GTK_WINDOW(CatchValue_Window), Entry_function); //Le premier Entry de la fenêtre aura le focus
+
 
 	//Insertion de la Vbox dans la fenêtre principal
 	VBox = gtk_vbox_new(TRUE, 0);

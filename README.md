@@ -15,7 +15,7 @@
 
 Information "compilation du code" :
 
-Ce projet a été coder en C incluant les bibliothèques GTK+ pour générer une interface graphique.
+Ce projet a été codé en C incluant les bibliothèques GTK+ pour générer une interface graphique.
 Pour compiler le code, il est nécessaire de télécharger les bibliothèques GTK+ les plus récentes (V. 2.24)
 Pour se faire, il faut :
 	- Sous LINUX :
