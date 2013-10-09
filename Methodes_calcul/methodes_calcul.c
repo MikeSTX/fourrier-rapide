@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 
+#include "Check_Parametre.c"
 
 
 /*********************************************************************
@@ -43,11 +44,17 @@ void GetResult_Function()
 	//Frame
 	GtkWidget* Frame; //Décoration pour mettre en valeur le résultat finale
 
-
 	//Texte de saisi
 	GtkWidget* Calcul_view; //Permet de voir les différentes étapes du calcul (debug)
-	GtkWidget* Scrollbar; //permet à insérer un scrollbar dans la zone de texte lorsque il y aura dépassement de ce dernier par rapport à la taille de Calcul_view
-	
+
+	//Variable nécessaire pour recopier le text d'un fichier dans la zone "texte de saisi"
+	GtkTextBuffer* buffer;
+	GtkTextIter start;
+	GtkTextIter end;
+	FILE *fichier;
+	const gchar* chemain;
+	gchar lecture[1024];
+
 
 
         /************************************************************
@@ -57,9 +64,8 @@ void GetResult_Function()
 	//Configuration de la fenêtre principale
 	GetResult_Window = gtk_window_new(GTK_WINDOW_TOPLEVEL); //Création de la fenêtre
 	gtk_window_set_title(GTK_WINDOW(GetResult_Window), "Fenetre - Resultat"); //Titre de la fenêtre
-	gtk_window_set_default_size(GTK_WINDOW(GetResult_Window), 600, 880); //Taille minimum de la fenêtre
+	gtk_window_set_default_size(GTK_WINDOW(GetResult_Window), 500, 780); //Taille minimum de la fenêtre
 	gtk_window_set_position(GTK_WINDOW(GetResult_Window), GTK_WIN_POS_CENTER); //Postionne la fenetre au centre de l'ecran
-	gtk_window_set_resizable(GTK_WINDOW(GetResult_Window), FALSE); // Il n'est pas possible de modifier la taille de la fenêtre
 	gtk_container_set_border_width(GTK_CONTAINER(GetResult_Window), 5);	
 
 	//Insertion de la table, cela permet d'insérer une grille invisible pour placer plus facilement les différents Widget de la fenêtre
@@ -83,6 +89,28 @@ void GetResult_Function()
 	//Insertion du cadre décoratif
 	Frame = gtk_frame_new("Resultat final");
 	gtk_table_attach_defaults(GTK_TABLE(Table), Frame, 1, 9, 15, 19);	
+
+	/**********************************************************************************
+	**	DEBUT DU CALCUL
+	**********************************************************************************/
+	Check_Parametre(); //Rappel des parametre à l'utilisateur
+	//Ecriture dans la zone "saisi de texte"
+	buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(Calcul_view));
+	fichier = fopen("/home/tbruhiere/Projet_Mathematiques/.StepCalcul.txt", "rt");
+	gtk_text_buffer_get_start_iter(buffer, &start);
+	gtk_text_buffer_get_end_iter(buffer, &end);
+	gtk_text_buffer_delete(buffer, &start, &end);
+
+	while (fgets(lecture, 1024, fichier))
+	{
+		gtk_text_buffer_get_end_iter(buffer, &end);
+		gtk_text_buffer_insert(buffer, &end, g_locale_to_utf8(lecture, -1, NULL, NULL, NULL), -1);
+	}
+
+	fclose(fichier);
+	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(Progress), 0.01);
+
+
 
 
         /************************************************************
