@@ -6,10 +6,10 @@
 #include <gtk/gtk.h>
 
 
-void CheckValue_fin_p(GtkWidget *Btn_fin_p, gpointer data);
+void CheckValue_fin_p(GtkWidget *Btn[6], gpointer data);
 
 
-void CheckValue_fin_p(GtkWidget *Btn_fin_p, gpointer data)
+void CheckValue_fin_p(GtkWidget *Btn[6], gpointer data)
 {
         //Variables
         GtkWidget *pTempEntry;
@@ -26,9 +26,11 @@ void CheckValue_fin_p(GtkWidget *Btn_fin_p, gpointer data)
         //Interface utilisateur
          pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data)); //On recupère tous les widget de la HBox
         pTempLabel_useless = GTK_WIDGET(pList->data); //Le premier élément est un label (ininteressant)
+
         pList = g_list_next(pList); //On passe à l'élément suivant => la saisi utilisateur (interessant)
-        pTempEntry = GTK_WIDGET(pList->data);//On recupère sa valeur 
-        pList = g_list_next(pList); //Element suivant => bouton (ininteressant)
+        pTempEntry = GTK_WIDGET(pList->data);//On recupère sa valeur
+
+	pList = g_list_next(pList); //Element suivant => bouton (inintéressant) 
 
         pList = g_list_next(pList); //Element suivant => label (interessant)
         pTempLabel = GTK_WIDGET(pList->data); //On recupère sa valeur
@@ -82,12 +84,17 @@ void CheckValue_fin_p(GtkWidget *Btn_fin_p, gpointer data)
         }
 
 
-	FILE *f = fopen(".log.txt", "a");
-	fprintf(f, "%f\n", fin_periode_f);	
-	fclose(f);
-
-	gtk_image_set_from_file(GTK_IMAGE(pTempImage), "Image/Validation.png");
-	gtk_label_set_text(GTK_LABEL(pTempLabel), "Valeur enregitrer");
+	if (fin_periode_f < P.deb_periode)
+	{
+		gtk_image_set_from_file(GTK_IMAGE(pTempImage), "Image/Refus.jpg");
+		gtk_label_set_text(GTK_LABEL(pTempLabel), "Erreur : fin periode < debut periode");
+	}
+	else
+	{
+		gtk_image_set_from_file(GTK_IMAGE(pTempImage), "Image/Validation.png");
+		gtk_label_set_text(GTK_LABEL(pTempLabel), "Valeur enregitrer");
+		P.fin_periode = fin_periode_f;
+	}	
 
 
         //FIN FONCTION

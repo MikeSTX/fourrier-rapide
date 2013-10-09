@@ -6,13 +6,13 @@
 #include <gtk/gtk.h>
 
 
-void CheckValue_mu(GtkWidget *Btn_mu, gpointer data);
+void CheckValue_mu(GtkWidget *Btn[1], gpointer data);
 
 
 /*******************************************************************************
         sous-fonction concernant "mu"
 *******************************************************************************/
-void CheckValue_mu(GtkWidget *Btn_mu, gpointer data)
+void CheckValue_mu(GtkWidget *Btn[1], gpointer data)
 {
         //Variables
         GtkWidget *pTempEntry;
@@ -32,7 +32,7 @@ void CheckValue_mu(GtkWidget *Btn_mu, gpointer data)
         pList = g_list_next(pList); //On passe à l'élément suivant => la saisi utilisateur (interessant)
         pTempEntry = GTK_WIDGET(pList->data);//On recupère sa valeur
 
-        pList = g_list_next(pList); //Element suivant => bouton (ininteressant)
+	pList = g_list_next(pList); //Element suivant => bouton (inintéressant) 
 
         pList = g_list_next(pList); //Element suivant => label (interessant)
         pTempLabel = GTK_WIDGET(pList->data); //On recupère sa valeur
@@ -53,11 +53,7 @@ void CheckValue_mu(GtkWidget *Btn_mu, gpointer data)
         else
         {
                 gtk_image_set_from_file(GTK_IMAGE(pTempImage), "Image/Validation.png");
-
-                FILE *f = fopen(".log.txt", "a");
-                fprintf(f,"%d\n", mu_int);
-                fclose(f);
-
+		P.mu = mu_int;
                 gtk_label_set_text(GTK_LABEL(pTempLabel), "Valeur enregistrer");
         }
 

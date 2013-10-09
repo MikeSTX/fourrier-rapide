@@ -6,10 +6,10 @@
 #include <gtk/gtk.h>
 
 
-void CheckValue_function(GtkWidget *Btn_function, gpointer data);
+void CheckValue_function(GtkWidget *Btn[1], gpointer data);
 
 
-void CheckValue_function(GtkWidget *Btn_function, gpointer data)
+void CheckValue_function(GtkWidget *Btn[1], gpointer data)
 {
         //Variables
         GtkWidget *pTempEntry;
@@ -21,18 +21,20 @@ void CheckValue_function(GtkWidget *Btn_function, gpointer data)
 	const gchar *function;
 
 	//DEBUT FONCTION
-	   //Interface utilisateur
+
+	//Interface utilisateur
         pList = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data)); //On recupère tous les widget de la HBox
         pTempLabel_useless = GTK_WIDGET(pList->data); //Le premier élément est un label (ininteressant) 
+
         pList = g_list_next(pList); //On passe à l'élément suivant => la saisi utilisateur (interessant)
-        pTempEntry = GTK_WIDGET(pList->data);//On recupère sa valeur 
+        pTempEntry = GTK_WIDGET(pList->data);//On recupère sa valeur
+ 
         pList = g_list_next(pList); //Element suivant => bouton (ininteressant)
 
         pList = g_list_next(pList); //Element suivant => label (interessant)
         pTempLabel = GTK_WIDGET(pList->data); //On recupère sa valeur
 
-        function = gtk_entry_get_text(GTK_ENTRY(pTempEntry)); //On recupère la valeur contenu dans     la zone de saisi
-
+        function = gtk_entry_get_text(GTK_ENTRY(pTempEntry)); //On recupère la valeur contenu dans la zone de saisi
 
         pList = g_list_next(pList); //Element suivant => image
         pTempImage = GTK_IMAGE(pList->data); //On la stock dans un variable

@@ -5,6 +5,8 @@
 
 #include <gtk/gtk.h>
 
+
+
 /*********************************************************************
 *************************************
 
@@ -72,7 +74,7 @@ void GetResult_Function()
 	Progress = gtk_progress_bar_new();
 	gtk_table_attach_defaults(GTK_TABLE(Table), Progress, 1, 9, 1, 2);
 		
-	//Insertion de la fenêtre de visualisation des étapes du calcul, avec ses scrollbar
+	//Insertion de la fenêtre de visualisation des étapes du calcul
 	Calcul_view = gtk_text_view_new();
 	gtk_table_attach_defaults(GTK_TABLE(Table), Calcul_view, 1, 9, 3, 13);
 	gtk_widget_set_size_request(Calcul_view, 320, 240); //Ne déforme pas la fenêtre si le text dépasse la taille de zone Calcul_view

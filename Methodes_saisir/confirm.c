@@ -5,7 +5,7 @@
 
 #include <gtk/gtk.h>
 
-#include "/home/tbruhiere/Projet_math_Graphique/Methodes_calcul/methodes_calcul.c"
+
 
 
 void ConfirmValue(GtkWidget *Btn_confirm, gpointer data);

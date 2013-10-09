@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
+//#include "/home/tbruhiere/Projet_Mathematiques/Parametre.h"
 
 #include "saisir_fonction.c"
 #include "saisir_mu.c"
@@ -35,66 +36,25 @@ void CatchValue_Function()
 	/************************************************************
 	****	Variables					  ***\
 	*************************************************************/
+	int i; //compteur
 
 	//Fenêtre
 	GtkWidget* CatchValue_Window; //Déclaration de la fenêtre principal
 
 	//Box
 	GtkWidget* VBox; //Box verticale contenu dans la fenêtre principal
-	
-	GtkWidget* HBox_function; // Box horizontale rassemblant tout ce qui permet de saisir la fonction
-	GtkWidget* HBox_mu; //Box horizontale rassemblant tout ce qui permet de saisir mu
-	GtkWidget* HBox_j; // Box horizontale rassemblant tout ce qui permet de saisir j
-	GtkWidget* HBox_N; // Box horizontale rassemblant tout ce qui permet de saisir N (nombre de termes);
-	GtkWidget* HBox_l; //Box horizontale rassemblant tout ce qui permet de saisir l
-
-	GtkWidget* HBox_deb_p; //Box horizontale rassemblant tout ce qui permet de saisir le debut de la période
-	GtkWidget* HBox_fin_p; //Box horinzontale rassemblant tout ce qui permet de saisir la fin de la période
+	GtkWidget* HBox[6]; // Box horizontale rassemblant tout ce qui permet de saisir le paramètre
 
 	//Label
-	GtkWidget* Label_function;
-	GtkWidget* Label_Value_function;
-
-	GtkWidget* Label_mu;
-	GtkWidget* Label_Value_mu;
-
-	GtkWidget* Label_j;
-	GtkWidget* Label_Value_j;
-
-	GtkWidget* Label_N;
-	GtkWidget* Label_Value_N;
-
-	GtkWidget* Label_l;
-	GtkWidget* Label_Value_l;
-
-	GtkWidget* Label_deb_p;
-	GtkWidget* Label_Value_deb_p;
-	GtkWidget* Label_fin_p;
-	GtkWidget* Label_Value_fin_p;
-
+	GtkWidget* Label[6]; //Exemple type : "Saisir *parametre* : "
+	GtkWidget* Label_Value[6]; //Exemple type : "Valeur enregistrer" ou "Erreur : ..."
 
 	//Entry
-	GtkWidget* Entry_function; //Zone de saisi de la fonction
-	GtkWidget* Entry_mu; //Zone de saisi de mu
-	GtkWidget* Entry_j; //Zone de saisi de j
-	GtkWidget* Entry_N; //Zone de saisi de N	
-	GtkWidget* Entry_l; //Zone de saisi de l
-
-	GtkWidget* Entry_deb_p; //Zone de saisi du début de période
-	GtkWidget* Entry_fin_p; //Zone de saisi de fin de période
+	GtkWidget* Entry[6]; //Zone de saisi du paramètre
 
 	//Button
-	GtkWidget* Btn_function; //Bouton pour valider la saisi de la fonction
-	GtkWidget* Btn_mu; //Bouton pour valider la saisi de "mu"
-	GtkWidget* Btn_j; //Bouton pour valider la saisi de "j"
-	GtkWidget* Btn_N; //Bouton pour valider la saisi de "N"
-	GtkWidget* Btn_l; //Bouton pour valider la saisi de "l"
-
-	GtkWidget* Btn_deb_p; //Bouton pour valider la saisi du début de la période
-	GtkWidget* Btn_fin_p; //Bouton pour valider la saisi de la fin de la période
-
+	GtkWidget* Btn[6]; //Bouton de confirmation de saisi d'un paramètre
 	GtkWidget* Btn_confirm; //Bouton pour confirmer toutes les saisis
-
 
 	//Image
 	GtkWidget* Im_EtatValue; //Image d'illustration
@@ -124,172 +84,70 @@ void CatchValue_Function()
         /**     Zone => saisi de fonction (chaine de caractère)    **/
         /************************************************************/
 
-        //Insertion de la HBox_mu dans la VBox
-        HBox_function = gtk_hbox_new(TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(VBox), HBox_function, TRUE, TRUE, 0);
+	for ( i = 0; i <=6; i = i + 1)
+	{ 
+		//Insertion de la HBox dans la VBox
+		HBox[i] = gtk_hbox_new(TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(VBox), HBox[i], TRUE, TRUE, 0);
 
-        //Insertion du label, du entry et du bouton dans la Hbox
-        Label_function = gtk_label_new("Saisir la fonction : ");
-        Entry_function = gtk_entry_new();
-        Btn_function = gtk_button_new_with_label(">>");
-        Im_EtatValue = gtk_image_new();
-        Label_Value_function = gtk_label_new(NULL); // Ce label stock le nombre que mettra l'utilisateu, on pourra alors dire si la valeur est fausse ou non
+		//On veut maintenant savoir quel paramètre on est en train de gérer
+		switch(i)
+		{
+			case 0:
+				Label[i] = gtk_label_new("Saisir la fonction : ");
+				break;
 
-        gtk_box_pack_start(GTK_BOX(HBox_function), Label_function, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_function), Entry_function, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_function), Btn_function, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_function), Label_Value_function, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_function), Im_EtatValue, FALSE, FALSE, 0);
+			case 1:
+				Label[i] = gtk_label_new("Saisir mu (entier positif) : ");
+				break;
+			case 2:
+				Label[i] = gtk_label_new("Saisir j (entier positif <= mu) : ");
+				break;
 
-        gtk_window_set_focus(GTK_WINDOW(CatchValue_Window), Entry_function); //Le premier Entry de la fenêtre aura le focus
+			case 3:
+				Label[i] = gtk_label_new("Saisir l (entier positif) : ");
+				break;
 
-        // Connexion du signal "clicked" du bouton "Btn_mu" 
-        g_signal_connect(G_OBJECT(Btn_function), "clicked", G_CALLBACK(CheckValue_function), (GtkWidget*) HBox_function);
+			case 4:
+				Label[i] = gtk_label_new("Saisir N (modulo 2) : ");
+				break;
 
+			case 5:
+				Label[i] = gtk_label_new("Saisir debut de periode : ");
+				break;
 
+			case 6:
+				Label[i] = gtk_label_new("Saisir fin de periode : ");
+				break;
 
+			default:
+				//Nothing because impossible
+				break;
+		}		
 
-	/**	Zone => saisi de mu (entier positif)	**/
-	/*************************************************/
+		//Insertion du label, du entry et du bouton dans la Hbox
+		Entry[i] = gtk_entry_new(); //Zone de saisi pour l'utilisateur
+		Btn[i] = gtk_button_new_with_label(">>"); //Bouton de comfirmation de saisi
+		Im_EtatValue = gtk_image_new(); // Image d'illustration
+		Label_Value[i] = gtk_label_new(NULL); // Ce label indique à l'utilisateur si la valeur qu'il a mise est possible ou non
 
-	//Insertion de la HBox_mu dans la VBox
-	HBox_mu = gtk_hbox_new(TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(VBox), HBox_mu, TRUE, TRUE, 0);
+		//On insère chaque widget précedement déclaré dans la HBox
+		gtk_box_pack_start(GTK_BOX(HBox[i]), Label[i], TRUE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(HBox[i]), Entry[i], TRUE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(HBox[i]), Btn[i], TRUE, TRUE, 0);
+		gtk_box_pack_start(GTK_BOX(HBox[i]), Label_Value[i], FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(HBox[i]), Im_EtatValue, FALSE, FALSE, 0);
 
-	//Insertion du label, du entry et du bouton dans la Hbox
-	Label_mu = gtk_label_new("Saisir mu (entier positif) : ");
-	Entry_mu = gtk_entry_new();
-	Btn_mu = gtk_button_new_with_label(">>");
-	Im_EtatValue = gtk_image_new();
-	Label_Value_mu = gtk_label_new(NULL); // Ce label stock le nombre que mettra l'utilisateu, on pourra alors dire si la valeur est fausse ou non
+	}
 
-	gtk_box_pack_start(GTK_BOX(HBox_mu), Label_mu, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_mu), Entry_mu, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_mu), Btn_mu, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_mu), Label_Value_mu, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_mu), Im_EtatValue, FALSE, FALSE, 0);
-
-	// Connexion du signal "clicked" du bouton "Btn_mu" 
-	g_signal_connect(G_OBJECT(Btn_mu), "clicked", G_CALLBACK(CheckValue_mu), (GtkWidget*) HBox_mu);
-
-	
-
-
-	/**	Zone => saisi de j (entier positif inférieur ou égale à mu)	**/
-	/*************************************************************************/
-	HBox_j = gtk_hbox_new(TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(VBox), HBox_j, TRUE, TRUE, 0);
-
-	//Insertion du label, du entry et du bouton dans la HBox
-	Label_j = gtk_label_new("Saisir j (entier positif < mu) : ");
-	Entry_j = gtk_entry_new();
-	Btn_j = gtk_button_new_with_label(">>");
-	Im_EtatValue = gtk_image_new();
-	Label_Value_j = gtk_label_new(NULL); //Ce label stock le nombre mis par l'utilisateur
-
-	gtk_box_pack_start(GTK_BOX(HBox_j), Label_j, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_j), Entry_j, TRUE, TRUE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_j), Btn_j, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_j), Label_Value_j, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(HBox_j), Im_EtatValue, FALSE, FALSE, 0);
-
-	// Connexion du signal "clicked" au bouton "Btn_j"
-	g_signal_connect(G_OBJECT(Btn_j), "clicked", G_CALLBACK(CheckValue_j), (GtkWidget*) HBox_j);
-
-
-
-
-        /**     Zone => saisi de N (entier positif modulo 2 et inférieur à pow(2,j))      **/
-        /***********************************************************************************/
-        HBox_N = gtk_hbox_new(TRUE, 0); 
-        gtk_box_pack_start(GTK_BOX(VBox), HBox_N, TRUE, TRUE, 0); 
-
-        //Insertion du label, du entry et du bouton dans la HBox
-        Label_N = gtk_label_new("Saisir N (entier positif modulo 2 < 2^j) : ");
-        Entry_N = gtk_entry_new();
-        Btn_N = gtk_button_new_with_label(">>");
-        Im_EtatValue = gtk_image_new();
-        Label_Value_N = gtk_label_new(NULL); //Ce label stock le nombre mis par l'utilisateur
-
-        gtk_box_pack_start(GTK_BOX(HBox_N), Label_N, TRUE, TRUE, 0); 
-        gtk_box_pack_start(GTK_BOX(HBox_N), Entry_N, TRUE, TRUE, 0); 
-        gtk_box_pack_start(GTK_BOX(HBox_N), Btn_N, FALSE, FALSE, 0); 
-        gtk_box_pack_start(GTK_BOX(HBox_N), Label_Value_N, FALSE, FALSE, 0); 
-        gtk_box_pack_start(GTK_BOX(HBox_N), Im_EtatValue, FALSE, FALSE, 0); 
-
-        // Connexion du signal "clicked" au bouton "Btn_j"
-        g_signal_connect(G_OBJECT(Btn_N), "clicked", G_CALLBACK(CheckValue_N), (GtkWidget*) HBox_N);
-
-
-
-
-	/**     Zone => saisi de l (entier positif inférieur à pow(2,mu-j))      **/
-        /***********************************************************************************/
-        HBox_l = gtk_hbox_new(TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(VBox), HBox_l, TRUE, TRUE, 0);
-
-        //Insertion du label, du entry et du bouton dans la HBox
-        Label_l = gtk_label_new("Saisir l (entier positif < 2^(mu-j)) : ");
-        Entry_l = gtk_entry_new();
-        Btn_l = gtk_button_new_with_label(">>");
-        Im_EtatValue = gtk_image_new();
-        Label_Value_l = gtk_label_new(NULL); //Ce label stock le nombre mis par l'utilisateur
-
-        gtk_box_pack_start(GTK_BOX(HBox_l), Label_l, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_l), Entry_l, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_l), Btn_l, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_l), Label_Value_l, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_l), Im_EtatValue, FALSE, FALSE, 0);
-
-        // Connexion du signal "clicked" au bouton "Btn_j"
-        g_signal_connect(G_OBJECT(Btn_l), "clicked", G_CALLBACK(CheckValue_l), (GtkWidget*) HBox_l);
-
-
-
-        /**     Zone => saisi de deb_p (relatif à pi)				           **/
-        /***********************************************************************************/
-        HBox_deb_p = gtk_hbox_new(TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(VBox), HBox_deb_p, TRUE, TRUE, 0);
-
-        //Insertion du label, du entry et du bouton dans la HBox
-        Label_deb_p = gtk_label_new("Saisir le debut de periode : ");
-        Entry_deb_p = gtk_entry_new();
-        Btn_deb_p = gtk_button_new_with_label(">>");
-        Im_EtatValue = gtk_image_new();
-        Label_Value_deb_p = gtk_label_new(NULL); //Ce label stock le nombre mis par l'utilisateur
-
-        gtk_box_pack_start(GTK_BOX(HBox_deb_p), Label_deb_p, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_deb_p), Entry_deb_p, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_deb_p), Btn_deb_p, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_deb_p), Label_Value_deb_p, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_deb_p), Im_EtatValue, FALSE, FALSE, 0);
-
-        // Connexion du signal "clicked" au bouton "Btn_j"
-        g_signal_connect(G_OBJECT(Btn_deb_p), "clicked", G_CALLBACK(CheckValue_deb_p), (GtkWidget*) HBox_deb_p);
-
-
-
-        /**     Zone => saisi de fin_p (relatif à pi)				          **/
-        /***********************************************************************************/
-        HBox_fin_p = gtk_hbox_new(TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(VBox), HBox_fin_p, TRUE, TRUE, 0);
-
-        //Insertion du label, du entry et du bouton dans la HBox
-        Label_fin_p = gtk_label_new("Saisir la fin de la periode : ");
-        Entry_fin_p = gtk_entry_new();
-        Btn_fin_p = gtk_button_new_with_label(">>");
-        Im_EtatValue = gtk_image_new();
-        Label_Value_fin_p = gtk_label_new(NULL); //Ce label stock le nombre mis par l'utilisateur
-
-        gtk_box_pack_start(GTK_BOX(HBox_fin_p), Label_fin_p, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_fin_p), Entry_fin_p, TRUE, TRUE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_fin_p), Btn_fin_p, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_fin_p), Label_Value_fin_p, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(HBox_fin_p), Im_EtatValue, FALSE, FALSE, 0);
-
-        // Connexion du signal "clicked" au bouton "Btn_j"
-        g_signal_connect(G_OBJECT(Btn_fin_p), "clicked", G_CALLBACK(CheckValue_fin_p), (GtkWidget*) HBox_fin_p);
-
+	// Lorque l'utilisateur appuie sur le bouton, alors le signal correspondant est activé 
+	//g_signal_connect(G_OBJECT(Btn[0]), "clicked", G_CALLBACK(CheckValue_function), (GtkWidget*) HBox[0]);
+	g_signal_connect(G_OBJECT(Btn[1]), "clicked", G_CALLBACK(CheckValue_mu), (GtkWidget*) HBox[1]);
+	g_signal_connect(G_OBJECT(Btn[2]), "clicked", G_CALLBACK(CheckValue_j), (GtkWidget*) HBox[2]);
+	g_signal_connect(G_OBJECT(Btn[3]), "clicked", G_CALLBACK(CheckValue_l), (GtkWidget*) HBox[3]);
+	g_signal_connect(G_OBJECT(Btn[4]), "clicked", G_CALLBACK(CheckValue_N), (GtkWidget*) HBox[4]);
+	g_signal_connect(G_OBJECT(Btn[5]), "clicked", G_CALLBACK(CheckValue_deb_p), (GtkWidget*) HBox[5]);
+	g_signal_connect(G_OBJECT(Btn[6]), "clicked", G_CALLBACK(CheckValue_fin_p), (GtkWidget*) HBox[6]);
 
 
 
