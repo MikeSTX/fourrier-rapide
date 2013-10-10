@@ -1,0 +1,12 @@
+Voici les parametre : 
+fonction : (null)
+mu : 10
+j : 6
+l : 5
+N : 8
+k : 7
+debut periode : -3,141593
+fin periode : 3,141593
+
+On a donc le calcul suivant : 
+----

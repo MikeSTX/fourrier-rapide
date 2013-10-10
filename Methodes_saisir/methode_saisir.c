@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include <gtk/gtk.h>
-//#include "/home/tbruhiere/Projet_Mathematiques/Parametre.h"
 
 #include "saisir_fonction.c"
 #include "saisir_mu.c"
